@@ -188,15 +188,20 @@ void testApp::update(){
         }
     }
     
-
+    
+    
+    if(ppls.size()>0){
+        for (int i=0; i<ppls.size(); i++) {
+            ppls[i]->update(mouseX, mouseY);
+        }
+    }
 
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 
-//    ofBackground(250,241,232);
-//    ofBackground(255, 255, 0);
+
     ofColor centerColor = ofColor(85,78,68);
     ofColor edgeColor = ofColor(0,0,0);
     ofBackgroundGradient(centerColor, edgeColor, OF_GRADIENT_CIRCULAR);
@@ -204,11 +209,17 @@ void testApp::draw(){
 //    easyCam.begin();
 //    ofPushMatrix();
 //    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-//        mesh.draw();
-//        image.draw(0, 0);
+
     
     for (int i=0; i<geos.size(); i++) {
-        geos[i].draw(OF_MESH_FILL);
+//        geos[i].draw();
+    }
+    
+    
+    if(ppls.size()>0){
+        for (int i=0; i<ppls.size(); i++) {
+            ppls[i]->draw();
+        }
     }
     
 //    point.draw();
@@ -259,7 +270,11 @@ void testApp::keyPressed(int key){
     
     if(key == 'm'){
 //        makeGeo(mouseX, ofGetWidth()-mouseY);
-        makeGeo(mouseX, mouseY);
+//        makeGeo(mouseX, mouseY);
+        
+        people* ppl = new people(mouseX, mouseY);
+        ppls.push_back(ppl);
+        
     }
 }
 

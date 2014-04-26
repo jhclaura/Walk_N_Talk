@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "people.h"
 
 class testApp : public ofBaseApp{
 
@@ -44,5 +45,8 @@ class testApp : public ofBaseApp{
     vector<ofColor> colors;
     
     ofMesh point;
+    
+    //------------ CLASS_PEOPLE -------------
+    vector<people*> ppls;
     
 };
