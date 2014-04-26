@@ -177,12 +177,12 @@ void testApp::update(){
             ofVec3f vertex = geos[0].getVertex(i);
             float distanceToMouse = mouseB.distance(vertex);
             
-            if(distanceToMouse < 5.0){
+            if(distanceToMouse < 50.0){
                 
                 ofVec3f direction = vertex - mouseB;
                 direction.normalize();
                 
-                ofVec3f displacedVertex = vertex + 5 * direction;
+                ofVec3f displacedVertex = vertex + 20 * direction;
                 geos[0].setVertex(i, displacedVertex);
             }
         }
@@ -208,7 +208,7 @@ void testApp::draw(){
 //        image.draw(0, 0);
     
     for (int i=0; i<geos.size(); i++) {
-        geos[i].draw();
+        geos[i].draw(OF_MESH_FILL);
     }
     
 //    point.draw();
@@ -223,21 +223,23 @@ void testApp::makeGeo(int x, int y){
     
     //DRAW_GEO
     ofMesh newGeo;
-    newGeo.setMode(OF_PRIMITIVE_LINES);
-//    newGeo.addColor( colors[(int)ofRandom(0, 4)] );
+    newGeo.setMode(OF_PRIMITIVE_LINE_LOOP);
+//    newGeo.enableColors();
+
     int colorIndex = (int)ofRandom(0,5);
     
-    int verticesNum = 20;
+    int verticesNum = 40;
     float radius = 60;
+
     
-    for (int i=0; i<20; i++) {
+    for (int i=0; i<verticesNum; i++) {
         
         float posX( x + sin((360/verticesNum*i)*(pi/180))*radius );
         float posY( y + sin(pi/2 + (360/verticesNum*i)*(pi/180))*radius);
         ofVec3f pos(posX, posY, 0);
         
-        newGeo.addColor( colors[colorIndex] );
         newGeo.addVertex(pos);
+        newGeo.addColor( colors[colorIndex] );
         
     }
     
