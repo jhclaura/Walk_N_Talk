@@ -98,6 +98,7 @@ void testApp::setup(){
     mouseDisplacement = false;
     
     
+    //COLORS_SET
     colors.push_back(ofColor(51, 205, 199));
     colors.push_back(ofColor(0, 101, 97));
     colors.push_back(ofColor(255, 169, 0));
@@ -110,6 +111,7 @@ void testApp::setup(){
 void testApp::update(){
     
     int numVerts = mesh.getNumVertices();
+    
     for (int i=0; i<numVerts; ++i) {
         ofVec3f vert = mesh.getVertex(i);
         
@@ -147,6 +149,7 @@ void testApp::update(){
         }
     }
     
+    
     //MAG
     ofVec3f mouse(mouseX, ofGetWidth()-mouseY, 0);
     
@@ -162,6 +165,30 @@ void testApp::update(){
         ofVec3f displacedVertex = vertex + displacement * direction;
         mesh.setVertex(i, displacedVertex);
     }
+    
+    
+    //PUSH_VERTICES
+    ofVec3f mouseB(mouseX, mouseY, 0);
+    point.addVertex(mouseB);
+
+    if (geos.size()>0) {
+        for (int i=0; i<geos[0].getNumVertices(); i++) {
+            
+            ofVec3f vertex = geos[0].getVertex(i);
+            float distanceToMouse = mouseB.distance(vertex);
+            
+            if(distanceToMouse < 5.0){
+                
+                ofVec3f direction = vertex - mouseB;
+                direction.normalize();
+                
+                ofVec3f displacedVertex = vertex + 5 * direction;
+                geos[0].setVertex(i, displacedVertex);
+            }
+        }
+    }
+    
+
 
 }
 
@@ -174,16 +201,20 @@ void testApp::draw(){
     ofColor edgeColor = ofColor(0,0,0);
     ofBackgroundGradient(centerColor, edgeColor, OF_GRADIENT_CIRCULAR);
     
-    easyCam.begin();
-    ofPushMatrix();
-    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+//    easyCam.begin();
+//    ofPushMatrix();
+//    ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
 //        mesh.draw();
 //        image.draw(0, 0);
+    
     for (int i=0; i<geos.size(); i++) {
         geos[i].draw();
     }
-    ofPopMatrix();
-    easyCam.end();
+    
+//    point.draw();
+
+//    ofPopMatrix();
+//    easyCam.end();
 
 }
 
@@ -202,7 +233,7 @@ void testApp::makeGeo(int x, int y){
     for (int i=0; i<20; i++) {
         
         float posX( x + sin((360/verticesNum*i)*(pi/180))*radius );
-        float posY( y + sin(pi/2 + (360/verticesNum*i)*(pi/180))*radius - radius);
+        float posY( y + sin(pi/2 + (360/verticesNum*i)*(pi/180))*radius);
         ofVec3f pos(posX, posY, 0);
         
         newGeo.addColor( colors[colorIndex] );
@@ -225,7 +256,8 @@ void testApp::keyPressed(int key){
     }
     
     if(key == 'm'){
-        makeGeo(mouseX, ofGetWidth()-mouseY);
+//        makeGeo(mouseX, ofGetWidth()-mouseY);
+        makeGeo(mouseX, mouseY);
     }
 }
 

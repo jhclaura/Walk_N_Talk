@@ -43,4 +43,6 @@ class testApp : public ofBaseApp{
     vector<ofMesh> geos;
     vector<ofColor> colors;
     
+    ofMesh point;
+    
 };
