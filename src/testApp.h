@@ -37,4 +37,10 @@ class testApp : public ofBaseApp{
     
     //MAG
     bool mouseDisplacement;
+    
+    //DRAW_GEOMETRY
+    void makeGeo(int x, int y);
+    vector<ofMesh> geos;
+    vector<ofColor> colors;
+    
 };

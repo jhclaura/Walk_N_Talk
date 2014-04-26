@@ -96,6 +96,14 @@ void testApp::setup(){
     
     
     mouseDisplacement = false;
+    
+    
+    colors.push_back(ofColor(51, 205, 199));
+    colors.push_back(ofColor(0, 101, 97));
+    colors.push_back(ofColor(255, 169, 0));
+    colors.push_back(ofColor(253, 0 ,6));
+    colors.push_back(ofColor(0,253, 247));
+    
 }
 
 //--------------------------------------------------------------
@@ -159,21 +167,53 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+
 //    ofBackground(250,241,232);
+//    ofBackground(255, 255, 0);
     ofColor centerColor = ofColor(85,78,68);
     ofColor edgeColor = ofColor(0,0,0);
-//    ofBackground(255, 255, 0);
     ofBackgroundGradient(centerColor, edgeColor, OF_GRADIENT_CIRCULAR);
     
     easyCam.begin();
     ofPushMatrix();
     ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
-        mesh.draw();
+//        mesh.draw();
 //        image.draw(0, 0);
+    for (int i=0; i<geos.size(); i++) {
+        geos[i].draw();
+    }
     ofPopMatrix();
     easyCam.end();
 
 }
+
+//--------------------------------------------------------------
+void testApp::makeGeo(int x, int y){
+    
+    //DRAW_GEO
+    ofMesh newGeo;
+    newGeo.setMode(OF_PRIMITIVE_LINES);
+//    newGeo.addColor( colors[(int)ofRandom(0, 4)] );
+    int colorIndex = (int)ofRandom(0,5);
+    
+    int verticesNum = 20;
+    float radius = 60;
+    
+    for (int i=0; i<20; i++) {
+        
+        float posX( x + sin((360/verticesNum*i)*(pi/180))*radius );
+        float posY( y + sin(pi/2 + (360/verticesNum*i)*(pi/180))*radius - radius);
+        ofVec3f pos(posX, posY, 0);
+        
+        newGeo.addColor( colors[colorIndex] );
+        newGeo.addVertex(pos);
+        
+    }
+    
+    geos.push_back(newGeo);
+    
+}
+
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -182,6 +222,10 @@ void testApp::keyPressed(int key){
         orbiting = !orbiting;
         startOrbitTime = ofGetElapsedTimef();
         mesh = meshCopy;
+    }
+    
+    if(key == 'm'){
+        makeGeo(mouseX, ofGetWidth()-mouseY);
     }
 }
 
@@ -202,6 +246,9 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+    
+//    makeGeo(x, ofGetWidth()-y);
+    
 
 }
 
